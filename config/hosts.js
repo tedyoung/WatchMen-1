@@ -1,326 +1,69 @@
-var one_tick = 20; //seconds
+var one_minute = 60; // 60 seconds
+var ten_minutes = 10 * one_minute;
+var half_hour = 30 * one_minute;
 
 //service name must be unique for a certain host.
 //host name must be unique
 module.exports =
 	[
 		{
-			name: 'iloire smtp',
-			host: 'mail.iloire.com',
-			port: 25,
-			ping_service_name: 'smtp',
-			timeout:10000,
-			ping_interval: one_tick, //seconds
-			failed_ping_interval: one_tick / 3, //minutes
-			enabled: true,
-			alert_to: ['ivan@iloire.com'],
-			warning_if_takes_more_than: 1500, //miliseconds
-			services : [
-				{
-					name: 'mail server'
-				}
-			]
-		} ,
-
-		{
-			name:'Apple HTTPS',
-			host: 'www.apple.com',
-			port:443,
-			protocol: 'https',
+			name: 'FNOL on tyoung-t3500',
+			host: 'tyoung-t3500',
+			port: 8082,
 			ping_service_name: 'http',
 			timeout:10000,
-			ping_interval: one_tick, //seconds
-			failed_ping_interval: one_tick / 3, //minutes
+			ping_interval: one_minute,
+			failed_ping_interval: one_minute,
 			enabled: true,
-			alert_to: ['ivan@iloire.com'],
-			warning_if_takes_more_than: 1500, //miliseconds
 			services : [
 				{
-					name: 'home',
+					name: 'FNOL Search Page',
 					method: 'get',
-					url : '/',
-					expected: {statuscode: 200, contains: 'Apple Inc'}
+					url : '/search.html',
+					expected: {statuscode: 200, contains: 'FNOL Wizard'}
 				}
 			]
 		} ,
 		{
-			name:'VitaminasDev',
-			host: 'www.vitaminasdev.com',
-			port:80,
+			name: 'ClaimCenter FNOL API',
+			host: 'tyoung-t3500',
+			port: 8080,
 			ping_service_name: 'http',
-			timeout:10000,
-			ping_interval: one_tick, //seconds
-			failed_ping_interval: one_tick / 3, //minutes
-			enabled: true,
-			alert_to: ['ivan@iloire.com'],
-			warning_if_takes_more_than: 1500, //miliseconds
-			services : [
-				{
-					name: 'home',
-					method: 'get',
-					url : '/',
-					expected: {statuscode: 200, contains: 'noticias'}
-				},
-				{
-					name: 'contact page',
-					method: 'get',
-					url : '/Home/Contacto',
-					expected: {statuscode: 200, contains: 'encantados'},
-					ping_interval:200, //overwrite ping and retry intervals for this url
-					failed_ping_interval: one_tick / 3
-				}
-			]
-		} ,
-		{
-			name:'iloire.com',
-			host: 'www.iloire.com',
-			port:80,
-			ping_service_name: 'http',
-			timeout:5000,
-			ping_interval: one_tick,
-			failed_ping_interval: one_tick / 3,
-			warning_if_takes_more_than: 1500, //miliseconds
-			enabled: true,
-			services : [
-				{
-					name: 'home',
-					method: 'get',
-					url : '/',
-					expected: {statuscode: 200, contains: 'vitaminas'}
-				},
-				{
-					name: 'english version',
-					method: 'get',
-					url : '/en',
-					expected: {statuscode: 200, contains: 'Freelance'}
-				}
-			]
-		} ,
-		{
-			name:'ASP Photo Gallery',
-			host: 'www.aspphotogallery.net',
-			port:80,
-			ping_service_name: 'http',
-			timeout:5000,
-			ping_interval: one_tick,
-			failed_ping_interval: one_tick / 3,
-			warning_if_takes_more_than: 1300, //miliseconds
-			enabled: true,
-			alert_to: ['ajax@aspphotogallery.net'], //you can include a different email recipient per host
-			services : [
-				{
-					name: 'home',
-					method: 'get',
-					url : '/',
-					expected: {statuscode: 302}
-				},
-				{
-					name: 'mvcphotogallery',
-					method: 'get',
-					url : '/mvcphotogallery',
-					warning_if_takes_more_than: 800,
-					expected: {statuscode: 200, contains: 'Knockout'}
-				},
-				{
-					name: 'demomvc',
-					method: 'get',
-					enabled: true,
-					url : '/demomvc',
-					expected: {statuscode: 200, contains: 'Simple, sexy, FAST, ASP.NET MVC photo gallery'}
-				}
-			]
-		} ,
-		{
-			name:'CachiruloValley',
-			host: 'cachirulovalley.com',
-			port:80,
-			ping_service_name: 'http',
-			timeout:10000,
-			ping_interval: one_tick,
-			failed_ping_interval: one_tick / 3,
+			timeout: 10000,
+			ping_interval: one_minute,
+			failed_ping_interval: one_minute,
 			warning_if_takes_more_than: 3000, //miliseconds
 			enabled: true,
 			services : [
 				{
-					name: 'home',
+					name: 'Auto Claim API (WS)',
 					method: 'get',
-					url : '/',
-					expected: {statuscode: 200, contains: ''}
+					url : '/cc/ws/gw/webservice/edge/fnol/IAutoClaimAPI?WSDL',
+					expected: {statuscode: 200, contains: 'wsdl:operation name="getTypelistByName"'}
 				}
 			]
 		} ,
 		{
-			name:'Directorio CachiruloValley',
-			host: 'directorio.cachirulovalley.com',
-			port:80,
+			name: 'Tomcat EDGE Server',
+			host: 'labsci2',
+			port: 8082,
 			ping_service_name: 'http',
-			timeout:10000,
-			ping_interval: 3 * one_tick,
-			failed_ping_interval: one_tick / 3,
-			warning_if_takes_more_than: 3000, //miliseconds
+			timeout: 10000,
+			ping_interval: one_minute,
+			failed_ping_interval: one_minute,
 			enabled: true,
 			services : [
 				{
-					name: 'home',
+					name: 'Launcher Home Page',
 					method: 'get',
-					url : '/',
-					expected: {statuscode: 200, contains: ''}
-				} ,
+					url : '/launcher/login.htm',
+					expected: {statuscode: 200, contains: '<h1>Guidewire Labs - Edge Apps</h1>'}
+				},
 				{
-					name: 'directory',
+					name: 'Consumer Portal',
 					method: 'get',
-					url : '/directory',
-					expected: {statuscode: 200, contains: ''}
-				}
-			]
-		} ,
-		{
-			name:'letsnode.com',
-			host: 'letsnode.com',
-			port:80,
-			ping_service_name: 'http',
-			timeout:10000,
-			ping_interval: one_tick,
-			failed_ping_interval: one_tick / 3,
-			enabled: true,
-			services : [
-				{
-					name: 'home',
-					method: 'get',
-					url : '/',
-					expected: {statuscode: 200, contains: 'A blog about node.js and express.js'}
-				}
-			]
-		} ,
-		{
-			name:'letsnode.com frelancer service',
-			host: 'letsnode.com',
-			port:8080,
-			ping_service_name: 'http',
-			timeout:10000,
-			ping_interval: one_tick,
-			failed_ping_interval: one_tick / 3,
-			enabled: false,
-			services : [
-				{
-					name: 'home',
-					method: 'get',
-					url : '/',
-					expected: {statuscode: 200, contains: 'journey'}
-				}
-			]
-		} ,
-		{
-			name:'mathrace demo',
-			host: 'letsnode.com',
-			port:8090,
-			ping_service_name: 'http',
-			timeout:10000,
-			ping_interval: one_tick,
-			failed_ping_interval: one_tick / 3,
-			enabled: true,
-			services : [
-				{
-					name: 'home',
-					method: 'get',
-					url : '/',
-					expected: {statuscode: 200, contains: 'Race'}
-				}
-			]
-		} ,
-		{
-			name:'google.com',
-			host: 'www.google.com',
-			port:80,
-			ping_service_name: 'http',
-			timeout:10000,
-			ping_interval: one_tick,
-			failed_ping_interval: one_tick / 3,
-			enabled: false,
-			services : [
-				{
-					name: 'home',
-					method: 'get',
-					url : '/',
-					expected: {statuscode: 302, contains: ''}
-				}
-			]
-		} ,
-		{
-			name:'localhost test',
-			host: '127.0.0.1',
-			port:8080,
-			ping_service_name: 'http',
-			ping_interval: one_tick,
-			failed_ping_interval: one_tick / 3,
-			alert_to: ['ivan@iloire.com'],
-			enabled: false,
-			services : [
-				{
-					name: 'home',
-					method: 'get',
-					url : '/',
-					expected: {statuscode: 200, contains: ''}
-				}
-			]
-		} ,
-		{
-			name:'Idibay direct',
-			host: 'direct.idibay.com',
-			port:80,
-			ping_service_name: 'http',
-			timeout:10000,
-			ping_interval: one_tick,
-			failed_ping_interval: one_tick / 3,
-			warning_if_takes_more_than: 4000, //miliseconds
-			enabled: true,
-			alert_to:['ivan@iloire.com'],
-			services : [
-				{
-					name: 'home',
-					method: 'get',
-					url : '/',
-					expected: {statuscode: 200, contains: 'Mundo Idibay'}
-				}
-			]
-		} ,
-		{
-			name:'Idibay',
-			host: 'www.idibay.com',
-			port:80,
-			ping_service_name: 'http',
-			timeout:10000,
-			ping_interval: one_tick,
-			failed_ping_interval: one_tick / 3,
-			warning_if_takes_more_than: 4000, //miliseconds
-			enabled: true,
-			alert_to:['ivan@iloire.com'],
-			services : [
-				{
-					name: 'home',
-					method: 'get',
-					url : '/',
-					expected: {statuscode: 200, contains: 'Mundo Idibay'}
-				}
-			]
-		} ,
-		{
-			name:'Cuéntica',
-			host: 'www.cuentica.com',
-			port:80,
-			ping_service_name: 'http',
-			timeout:10000,
-			ping_interval: one_tick,
-			failed_ping_interval: one_tick / 3,
-			enabled: true,
-			warning_if_takes_more_than: 1500, //miliseconds
-			alert_to:['ivan@iloire.com'],
-			services : [
-				{
-					name: 'home',
-					method: 'get',
-					url : '/',
-					expected: {statuscode: 200, contains: 'Cuéntica'}
+					url: '/consumer/login.htm',
+					expected: {statuscode: 200, contains: '<title>Consumer'}
 				}
 			]
 		} ,
@@ -329,9 +72,9 @@ module.exports =
 			host: 'hroch486.icpf.cas.cz',
 			port:80,
 			ping_service_name: 'http',
-			ping_interval: one_tick,
-			failed_ping_interval: one_tick / 3,
-			enabled: true,
+			ping_interval: one_minute,
+			failed_ping_interval: one_minute / 3,
+			enabled: false,
 			services : [
 				{
 					name: 'post',
@@ -346,81 +89,6 @@ module.exports =
 					content_type : 'application/x-www-form-urlencoded', // application/json
 					url : '/cgi-bin/echo.pl',
 					expected: {statuscode: 200, contains: 'your_name = Ivan'}
-				}
-			]
-		} ,
-		{
-			name:'Menéame',
-			host: 'www.meneame.net',
-			port:80,
-			ping_service_name: 'http',
-			timeout:10000,
-			ping_interval: one_tick,
-			failed_ping_interval: one_tick / 3,
-			warning_if_takes_more_than: 2000,
-			enabled: true,
-			services : [
-				{
-					name: 'home',
-					method: 'get',
-					url : '/',
-					expected: {statuscode: 200, contains: 'Menéame'}
-				}
-			]
-		} ,
-		{
-			name:'node js',
-			host: 'nodejs.org',
-			port:80,
-			ping_service_name: 'http',
-			timeout:10000,
-			ping_interval: one_tick,
-			failed_ping_interval: one_tick / 3,
-			warning_if_takes_more_than: 1500,
-			enabled: true,
-			services : [
-				{
-					name: 'home',
-					method: 'get',
-					url : '/',
-					expected: {statuscode: 200, contains: 'Node'}
-				}
-			]
-		} ,
-		{
-			name:'redis',
-			host: 'redis.io',
-			port:80,
-			ping_service_name: 'http',
-			timeout:10000,
-			ping_interval: one_tick,
-			failed_ping_interval: one_tick / 3,
-			warning_if_takes_more_than: 1500,
-			enabled: true,
-			services : [
-				{
-					name: 'home',
-					method: 'get',
-					url : '/',
-					expected: {statuscode: 200, contains: 'Redis'}
-				}
-			]
-		} ,
-		{
-			name:'express',
-			host: 'expressjs.com',
-			port:80,
-			ping_service_name: 'http',
-			timeout:10000,
-			ping_interval: one_tick,
-			failed_ping_interval: one_tick / 3,
-			enabled: true,
-			services : [
-				{
-					name: 'home',
-					method: 'get',
-					url : '/',
-					expected: {statuscode: 200, contains: 'web application framework'}
 				}
 			]
 		}

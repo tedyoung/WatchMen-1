@@ -15,7 +15,7 @@ watchmen.on('service_error', function(service, state){
 	/*
 	//Do here any additional stuff when you get an error
 	*/
-	var info = service.url_info + ' down!. Error: ' + state.error + '. Retrying in ' +
+	var info = service.url_info + ' DOWN. Error: ' + state.error + '. Retrying in ' +
 			(parseInt(state.next_attempt_secs, 10) / 60) + ' minute(s)..';
 
 	console.log (info);
@@ -23,40 +23,40 @@ watchmen.on('service_error', function(service, state){
 	if (state.prev_state.status === 'success' && config.notifications.enabled){
 		email_service.sendEmail(
 				service.alert_to,
-				service.url_info + ' is down!',
-				service.url_info + ' is down!. Reason: ' + state.error
+				service.url_info + ' is down',
+				service.url_info + ' is down.  Reason: ' + state.error
 		);
 	}
 });
 
 watchmen.on('service_warning', function(service, state){
 
-	/*
 	//Do here any additional stuff when you get a warning
 
 	console.log (service.url_info + ' WARNING (' + state.elapsed_time + ' ms, avg: '
 			+ state.avg_response_time + ') ## ' + state.warnings + ' warnings');
-	*/
 
 });
 
 watchmen.on('service_back', function(service, state){
+	var info = service.url_info + ' BACK UP. ' + service.msg;
+
+	console.log (info);
+
 	if (config.notifications.enabled){
 		email_service.sendEmail(
 				service.alert_to,
-				service.url_info + ' is back!',
+				service.url_info + ' is back up',
 				service.url_info + ' ' +  service.msg
 		);
 	}
 });
 
 watchmen.on('service_ok', function(service, state){
-	/*
 	//Do here any additional stuff when you get a successful response
 
-	console.log (service.url_info + ' responded OK! (' + state.elapsed_time + ' milliseconds, avg: '
+	console.log (service.url_info + ' responded OK. (at ' + state.timestamp + ', elapsed: ' + state.elapsed_time + ' milliseconds, avg: '
 			+ state.avg_response_time + ')');
-  */
 });
 
 //----------------------------------------------------

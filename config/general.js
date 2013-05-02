@@ -1,10 +1,10 @@
 module.exports = {
 	'notifications' : {
-		enabled: false, //if disabled, no notifications will be sent
-		to: ['ivan@iloire.com'], //default notification list if no alert_to is specified for host or url
+		enabled: true, //if disabled, no notifications will be sent
+		to: ['tyoung@guidewire.com'], //default notification list if no alert_to is specified for host or url
 		postmark : {
-			from: 'ivan@iloire.com',
-			api_key : 'your-postmark-key-here'
+			from: 'tyoung@guidewire.com',
+			api_key : 'a626753d-705e-492b-8a2a-181ced4128a4'
 		}
 	}
 };
